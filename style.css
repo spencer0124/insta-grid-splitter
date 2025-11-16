@@ -1,20 +1,17 @@
-/* --- 토스 기본 설정 --- */
+/* --- v7.0: 앱 레이아웃 설정 --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+html,
 body {
+  height: 100%; /* 화면 전체 높이 */
+  overflow: hidden; /* 브라우저 스크롤 방지 */
+  background-color: #f2f4f6; /* 토스 배경 회색 */
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Segoe UI", Roboto, sans-serif;
-  background-color: #f2f4f6; /* 토스 배경 회색 */
-  color: #191919;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 상단 정렬 */
-  min-height: 100vh;
-  padding: 20px;
 }
 
 button {
@@ -24,39 +21,74 @@ button {
   background-color: transparent;
 }
 
-/* --- 토스 카드 레이아웃 --- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* body 높이 100% */
+  width: 100%;
+  max-width: 600px; /* PC에서는 너무 안 커지게 */
+  margin: 0 auto;
+  padding: 16px 16px 0 16px; /* 하단 여백은 card-footer가 처리 */
+}
+
+.ad-banner {
+  width: 100%;
+  height: 60px; /* 사장님 요청: 카톡 배너 크기 */
+  background-color: #e5e8eb;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b95a1;
+  font-size: 14px;
+}
+
+.content-area {
+  flex: 1; /* 배너를 제외한 모든 남은 공간 차지 */
+  overflow: hidden; /* 이 컨테이너는 스크롤 안 됨 */
+  position: relative; /* 카드 배치를 위해 */
+}
+
+/* --- v7.0: 토스 카드 레이아웃 (앱 구조에 맞게 수정) --- */
 .toss-card {
   background-color: #ffffff;
-  border-radius: 20px;
+  /* 둥근 모서리는 상단에만 줌 (토스 앱처럼) */
+  border-radius: 20px 20px 0 0;
   width: 100%;
-  max-width: 420px; /* 모바일 최적화 폭 */
+  height: 100%; /* .content-area를 꽉 채움 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: none; /* JS가 .active로 제어 */
+
+  /* 카드 자체는 숨김/표시만 */
+  display: none;
+
+  /* v7.0: 카드를 '컨텐츠(스크롤)'와 '푸터(고정)'로 분리 */
   flex-direction: column;
   overflow: hidden;
 }
-
 .toss-card.active {
   display: flex;
-}
+} /* flex가 되면서 column으로 정렬 */
 
+/* v7.0: 스크롤되는 컨텐츠 영역 */
 .card-content {
+  flex: 1; /* 푸터를 제외한 모든 남은 공간 차지 */
+  overflow-y: auto; /* ★★★ 여기가 스크롤됨 ★★★ */
   padding: 32px 24px;
-  text-align: left; /* 토스는 좌측 정렬 */
+  text-align: left;
 }
 
-/* --- v4.0: 토스 멘트 (카피) --- */
+/* --- 멘트 (카피) --- */
 h1 {
   font-size: 26px;
   font-weight: 700;
-  color: #191919; /* 토스 블랙 */
+  color: #191919;
   margin-bottom: 12px;
   line-height: 1.4;
 }
-
 p {
   font-size: 16px;
-  color: #6b7684; /* 토스 그레이 */
+  color: #6b7684;
   margin-bottom: 32px;
   line-height: 1.5;
 }
@@ -65,7 +97,7 @@ p {
 .btn-primary {
   width: 100%;
   height: 52px;
-  background-color: #0070ff; /* 토스 블루 */
+  background-color: #0070ff;
   color: #ffffff;
   font-size: 17px;
   font-weight: 600;
@@ -79,8 +111,8 @@ p {
 .btn-secondary {
   width: 100%;
   height: 52px;
-  background-color: #f2f4f6; /* 토스 배경 회색 */
-  color: #4e5968; /* 토스 다크 그레이 */
+  background-color: #f2f4f6;
+  color: #4e5968;
   font-size: 17px;
   font-weight: 600;
   border-radius: 14px;
@@ -92,7 +124,7 @@ p {
 
 /* --- 단계 2: 원본 미리보기 --- */
 #sourcePreview {
-  width: 60px; /* 더 작게 */
+  width: 60px;
   height: 60px;
   border-radius: 10px;
   object-fit: cover;
@@ -100,30 +132,29 @@ p {
   border: 1px solid #f2f4f6;
 }
 
-/* --- v4.0: 시각적 옵션 카드 --- */
+/* --- 시각적 옵션 카드 --- */
 .option-group {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-
 .option-card {
   width: 100%;
   padding: 16px;
-  border: 2px solid #e5e8eb; /* 비활성 테두리 */
+  border: 2px solid #e5e8eb;
   border-radius: 14px;
-  text-align: center; /* 가운데 정렬 */
+  text-align: center;
   transition: border-color 0.2s, box-shadow 0.2s;
   display: flex;
-  flex-direction: column; /* 아이콘과 텍스트 수직 정렬 */
+  flex-direction: column;
   align-items: center;
-  gap: 12px; /* 아이콘과 텍스트 간격 */
+  gap: 12px;
 }
 .option-card:hover {
   border-color: #0070ff;
 }
 .option-card.active {
-  border-color: #0070ff; /* 토스 블루 */
+  border-color: #0070ff;
   box-shadow: 0 0 0 2px #0070ff;
 }
 .option-card strong {
@@ -131,8 +162,6 @@ p {
   font-weight: 600;
   color: #333d4b;
 }
-
-/* v4.0: 그리드 미리보기 '표' 아이콘 */
 .grid-preview {
   width: 48px;
   height: 48px;
@@ -140,14 +169,12 @@ p {
   gap: 3px;
 }
 .grid-cell {
-  background-color: #dde0e3; /* 비활성 회색 */
+  background-color: #dde0e3;
   border-radius: 2px;
 }
 .option-card.active .grid-cell {
-  background-color: #0070ff; /* 활성 파란색 */
+  background-color: #0070ff;
 }
-
-/* 그리드 '표' 아이콘 레이아웃 */
 .three-by-one {
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -168,7 +195,10 @@ p {
 #gridResultContainer {
   display: grid;
   gap: 5px;
-  margin-bottom: 32px;
+  /* v7.0: max-height, overflow 제거. 부모(.card-content)가 스크롤함 */
+  border: 1px solid #f2f4f6;
+  border-radius: 12px;
+  padding: 5px;
 }
 #gridResultContainer a {
   display: block;
@@ -185,13 +215,20 @@ p {
   height: auto;
 }
 
-/* --- 하단 고정 버튼 --- */
+/* --- v7.0: 하단 고정 버튼 --- */
 .card-footer {
   padding: 12px 24px 24px 24px;
   background-color: #fff;
+  /* v7.0: margin-top: auto 제거. flex-direction: column의 자연스러운 흐름 */
   border-top: 1px solid #f2f4f6;
 }
 .card-footer.button-group {
   display: flex;
   gap: 10px;
+}
+
+/* v7.0: 1단계용 심플 푸터 */
+.card-footer-simple {
+  padding: 12px 24px 24px 24px;
+  background-color: #fff;
 }
