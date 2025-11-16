@@ -1,13 +1,20 @@
-/* === 리팩토링된 script.js (v5.2: 점선 가이드/이름 수정) === */
+/* === 리팩토링된 script.js (v-fix: 3:4 비율) === */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // --- (v5.1) "4:5 파노라마" 전용 옵션 정의 (이름 단순화) ---
+  // --- ▼▼▼ [수정됨] v-fix: 3:4 비율로 targetRatio 변경 ---
   const ALL_GRID_OPTIONS = [
-    { id: "3x1-pano", text: "1줄 (3장)", cols: 3, rows: 1, targetRatio: 2.4 }, // (1080*3) / 1350 = 2.4
-    { id: "3x2-pano", text: "2줄 (6장)", cols: 3, rows: 2, targetRatio: 1.2 }, // (1080*3) / (1350*2) = 1.2
-    { id: "3x3-pano", text: "3줄 (9장)", cols: 3, rows: 3, targetRatio: 0.8 }, // (1080*3) / (1350*3) = 0.8
-    { id: "3x4-pano", text: "4줄 (12장)", cols: 3, rows: 4, targetRatio: 0.6 }, // (1080*3) / (1350*4) = 0.6
+    { id: "3x1-pano", text: "1줄 (3장)", cols: 3, rows: 1, targetRatio: 2.25 }, // (3 * 3) / (1 * 4) = 9/4
+    { id: "3x2-pano", text: "2줄 (6장)", cols: 3, rows: 2, targetRatio: 1.125 }, // (3 * 3) / (2 * 4) = 9/8
+    { id: "3x3-pano", text: "3줄 (9장)", cols: 3, rows: 3, targetRatio: 0.75 }, // (3 * 3) / (3 * 4) = 9/12
+    {
+      id: "3x4-pano",
+      text: "4줄 (12장)",
+      cols: 3,
+      rows: 4,
+      targetRatio: 0.5625,
+    }, // (3 * 3) / (4 * 4) = 9/16
   ];
+  // --- ▲▲▲ [수정됨] v-fix: 3:4 비율로 targetRatio 변경 ---
 
   // (v4.0) 사진 손실이 이 값(%) 이상이면 '여백 채우기'를 제안
   const CROP_LOSS_THRESHOLD_RATIO = 0.4; // 40% 이상 잘려나갈 때
@@ -327,26 +334,22 @@ document.addEventListener("DOMContentLoaded", () => {
               const guides = document.createElement("div");
               guides.className = "seam-guides-dynamic";
 
-              // === ▼▼▼ [수정됨] v_blog_fix: 블로그 지식 기반 가이드라인 수정 ▼▼▼ ===
-              // 3. (v_blog_fix) 블로그 지식 기반 가이드라인 수정
+              // === ▼▼▼ [수정됨] v-fix: 3:4 (붉은선 제거) ▼▼▼ ===
+              // 3. (흰색) 내부 세로 분할선 (1px)
               guides.innerHTML = `
-                <div class="seam-line-dynamic outer-safe-zone outer-left"></div>
-                <div class="seam-line-dynamic outer-safe-zone outer-right"></div>
-
                 <div class="seam-line-dynamic internal-split-line vertical-split vertical-1"></div>
                 <div class="seam-line-dynamic internal-split-line vertical-split vertical-2"></div>
               `;
 
-              // 4. (v5.2 / v_blog_fix) '줄 수'에 맞는 '가로' 분할선 추가 (흰색)
+              // 4. '줄 수'에 맞는 '가로' 분할선 추가 (흰색)
               for (let i = 1; i < gridOption.rows; i++) {
                 const hLine = document.createElement("div");
-                // (v_blog_fix) 'internal-split-line' 클래스 추가
                 hLine.className =
                   "seam-line-dynamic internal-split-line horizontal";
                 hLine.style.top = `${(i / gridOption.rows) * 100}%`;
                 guides.appendChild(hLine);
               }
-              // === ▲▲▲ [수정됨] v_blog_fix: 블로그 지식 기반 가이드라인 수정 ▲▲▲ ===
+              // === ▲▲▲ [수정됨] v-fix: 3:4 (붉은선 제거) ▲▲▲ ===
 
               cropBox.appendChild(guides);
             }
@@ -424,9 +427,9 @@ document.addEventListener("DOMContentLoaded", () => {
         gridResultContainer.innerHTML = "";
         App.state.generatedPieces = [];
 
-        // imageToSplit는 (3*4) : (N*5) 비율의 캔버스임
-        // (예: 3x2 -> 12:10 = 1.2 비율)
-        // 이것을 3x2로 자르면, 각 조각은 (12/3) : (10/2) = 4:5 비율이 됨.
+        // imageToSplit는 이제 (3*3) : (N*4) 비율의 캔버스임
+        // (예: 3x2 -> 9:8 = 1.125 비율)
+        // 이것을 3x2로 자르면, 각 조각은 (9/3) : (8/2) = 3:4 비율이 됨.
         const pieceWidth = imageToSplit.width / cols;
         const pieceHeight = imageToSplit.height / rows;
 
@@ -453,8 +456,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             const dataUrl = canvas.toDataURL("image/png");
-            // (v5.0) 1번부터 순서대로 저장 (1, 2, 3, ...)
-            const pieceNumber = r * cols + c + 1;
+
+            // [v-fix] 인스타 업로드 순서(아래->위)로 번호 저장 (7,8,9 -> 4,5,6 -> 1,2,3)
+            const pieceNumber = (rows - 1 - r) * cols + c + 1;
+
             const name = `image_${pieceNumber}.png`;
             App.state.generatedPieces.push({ name, data: dataUrl });
 
@@ -487,7 +492,14 @@ document.addEventListener("DOMContentLoaded", () => {
         App.ui.setLoading(zipDownloadButton, "압축 중...");
         try {
           const zip = new JSZip();
-          for (const piece of generatedPieces) {
+          // (v-fix) .zip 파일도 번호 순서대로 정렬 (1, 2, 3...)
+          const sortedPieces = [...generatedPieces].sort((a, b) => {
+            const numA = parseInt(a.name.match(/\d+/)[0]);
+            const numB = parseInt(b.name.match(/\d+/)[0]);
+            return numA - numB;
+          });
+
+          for (const piece of sortedPieces) {
             const imageData = piece.data.split(",")[1];
             zip.file(piece.name, imageData, { base64: true });
           }

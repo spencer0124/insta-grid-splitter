@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>인스타 4:5 썸네일 분할기</title>
+    <title>인스타 파노라마 분할기</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
@@ -19,11 +19,8 @@
       <div class="content-area">
         <div id="step-1-upload" class="toss-card active">
           <div class="card-content">
-            <h1>4:5 파노라마 피드<br />한번에 만들기</h1>
-            <p>
-              프로필 썸네일(3:4)에 딱 맞게,<br />안전 영역을 계산해서
-              나눠드려요.
-            </p>
+            <h1>파노라마 피드<br />한번에 만들기</h1>
+            <p>프로필 썸네일에 3:4 비율로<br />딱 맞게 나눠드려요.</p>
           </div>
           <div class="card-footer-simple">
             <button id="uploadButton" class="btn-primary">+ 사진 올리기</button>
@@ -69,12 +66,9 @@
               >로 나눌까요?
             </h1>
             <p>
-              가이드라인이 새로워졌습니다.<br />
-              <strong>붉은 점선 ( | )</strong>은 프로필 썸네일의
-              <strong>맨 왼쪽/오른쪽</strong>에서만 잘리는 '안전 영역'입니다.
-              중요한 얼굴/글자를 피하세요.<br />
+              선택한 줄 수에 맞춰 <strong>3:4 비율</strong>로 나눕니다.<br />
               <strong>흰색 점선 (┆)</strong>은 사진이 나뉘는 '분할선'입니다.
-              파노라마를 위해 이미지가 이 선을 자연스럽게 가로지르게 하세요.
+              이미지가 이 선을 자연스럽게 가로지르게 배치하세요.
             </p>
             <div id="cropperContainer">
               <img id="cropperImage" src="" alt="크롭할 이미지" />
@@ -107,7 +101,7 @@
         <div id="step-3-result" class="toss-card">
           <div class="card-content">
             <h1>완료!</h1>
-            <p>4:5 비율로 저장됐습니다.<br />순서대로 1번부터 업로드하세요.</p>
+            <p>3:4 비율로 저장됐습니다.<br />순서대로 1번부터 업로드하세요.</p>
             <div id="gridResultContainer"></div>
           </div>
           <div class="card-footer button-group">
