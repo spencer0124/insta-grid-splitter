@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- (v6.0) 3106px 너비 기준 4:5 파노라마 비율 정의 ---
-  // W = 3106px
-  // H = 1350px * Rows
+  // --- (v7.0) 3106px 너비 기준 4:5 파노라마 비율 정의 ---
   const ALL_GRID_OPTIONS = [
     {
       id: "3x1-pano",
@@ -9,30 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
       cols: 3,
       rows: 1,
       targetRatio: 3106 / 1350,
-    }, // ~2.30
+    },
     {
       id: "3x2-pano",
       text: "2줄 (6장)",
       cols: 3,
       rows: 2,
       targetRatio: 3106 / 2700,
-    }, // ~1.15
+    },
     {
       id: "3x3-pano",
       text: "3줄 (9장)",
       cols: 3,
       rows: 3,
       targetRatio: 3106 / 4050,
-    }, // ~0.76
+    },
     {
       id: "3x4-pano",
       text: "4줄 (12장)",
       cols: 3,
       rows: 4,
       targetRatio: 3106 / 5400,
-    }, // ~0.57
+    },
   ];
 
+  // 사진 손실이 이 값(%) 이상이면 '여백 채우기'를 제안
   const CROP_LOSS_THRESHOLD_RATIO = 0.4;
 
   const App = {
@@ -223,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
           App.logic.splitImage(imageToSplit, App.state.selectedGridOption);
           App.ui.setLoading(
             App.elements.splitWithPadButton,
-            "💙 네, 여백으로 나눌게요",
+            "네, 여백 넣을게요",
             false
           );
         };
@@ -240,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
           App.logic.splitImage(imageToSplit, App.state.selectedGridOption);
           App.ui.setLoading(
             App.elements.cropAndSplitButton,
-            "💙 이대로 나누기",
+            "이대로 나누기",
             false
           );
         };
@@ -297,9 +296,8 @@ document.addEventListener("DOMContentLoaded", () => {
           aspectRatio: gridOption.targetRatio,
           viewMode: 1,
           autoCropArea: 1.0,
-          guides: false, // 기본 격자 제거
+          guides: false,
           ready() {
-            // (v6.0) 새로운 가이드 동적 생성
             const cropBox =
               App.elements.cropperContainer.querySelector(".cropper-crop-box");
             if (cropBox) {
@@ -309,19 +307,14 @@ document.addEventListener("DOMContentLoaded", () => {
               const guides = document.createElement("div");
               guides.className = "seam-guides-dynamic";
 
-              // 1. 붉은색 Margin Zone (좌/우)
               guides.innerHTML += `
                 <div class="seam-margin-zone left"></div>
                 <div class="seam-margin-zone right"></div>
               `;
-
-              // 2. 흰색 Split Line (분기점)
               guides.innerHTML += `
                 <div class="seam-split-line split-1"></div>
                 <div class="seam-split-line split-2"></div>
               `;
-
-              // 3. 가로 분할선 (Rows)
               for (let i = 1; i < gridOption.rows; i++) {
                 const hLine = document.createElement("div");
                 hLine.className = "seam-horizontal-line";
@@ -392,7 +385,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return canvas;
       },
 
-      // (v6.0) 핵심: 겹침을 고려한 분할 로직
       splitImage(imageToSplit, gridOption) {
         const { gridResultContainer } = App.elements;
         const { cols, rows } = gridOption;
@@ -400,8 +392,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gridResultContainer.innerHTML = "";
         App.state.generatedPieces = [];
 
-        // 1. Master Canvas 생성 (W:3106 기준)
-        // imageToSplit을 3106px 폭으로 리사이징합니다.
         const masterWidth = 3106;
         const masterHeight = 1350 * rows;
 
@@ -411,8 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const mCtx = masterCanvas.getContext("2d");
         mCtx.drawImage(imageToSplit, 0, 0, masterWidth, masterHeight);
 
-        // 2. 조각내기 (Slicing)
-        // 각 조각은 1080 x 1350
         const pieceWidth = 1080;
         const pieceHeight = 1350;
 
@@ -423,34 +411,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         gridResultContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
-        // 좌표 설정 (PDF 원리 적용)
-        const xCoords = [0, 1013, 2026]; // 1열, 2열, 3열의 시작 x좌표
+        const xCoords = [0, 1013, 2026];
+        const totalPieces = cols * rows;
 
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
             sCtx.clearRect(0, 0, pieceWidth, pieceHeight);
-
-            // Master Canvas에서 겹침을 고려하여 1080px씩 추출
             sCtx.drawImage(
               masterCanvas,
               xCoords[c],
-              r * pieceHeight, // sx, sy
+              r * pieceHeight,
               pieceWidth,
-              pieceHeight, // sw, sh
+              pieceHeight,
               0,
-              0, // dx, dy
+              0,
               pieceWidth,
-              pieceHeight // dw, dh
+              pieceHeight
             );
 
             const dataUrl = sliceCanvas.toDataURL("image/png");
-            const pieceNumber = r * cols + c + 1;
+
+            const pieceNumber = totalPieces - (r * cols + c);
             const name = `image_${pieceNumber}.png`;
             App.state.generatedPieces.push({ name, data: dataUrl });
 
             const link = document.createElement("a");
             link.href = dataUrl;
             link.download = name;
+            link.title = `${pieceNumber}번 사진 저장`;
             link.target = "_blank";
 
             const numberLabel = document.createElement("span");
@@ -488,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
           console.error("ZIP 생성 중 오류 발생:", error);
         } finally {
-          App.ui.setLoading(zipDownloadButton, ".zip으로 모두 받기", false);
+          App.ui.setLoading(zipDownloadButton, "한번에 저장하기", false);
         }
       },
     },
@@ -547,7 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const { originalImage } = App.state;
         const boldText = gridOption.text.split(" ")[0];
         padHeadingText.innerHTML = `"${boldText}"로 나누면`;
-        padOptionText.innerHTML = `"${gridOption.text}"`;
+        padOptionText.innerHTML = `"${boldText}"`;
         fitPreviewContainer.style.aspectRatio = gridOption.targetRatio;
         fitPreviewContainer.style.backgroundImage = `url(${originalImage.src})`;
       },

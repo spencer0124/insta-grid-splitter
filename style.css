@@ -1,4 +1,4 @@
-/* --- v7.0: 앱 레이아웃 설정 --- */
+/* --- v7.2: 앱 레이아웃 설정 --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,7 +10,7 @@ body {
   height: 100vh;
   height: calc(var(--app-height, 1vh) * 100);
   overflow: hidden;
-  background-color: #f2f4f6;
+  background-color: #f2f4f6; /* 토스 배경 회색 */
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Segoe UI", Roboto, sans-serif;
 }
@@ -160,6 +160,8 @@ p > strong {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  /* 카드의 높이 통일을 위해 정렬 방식 지정 */
+  justify-content: flex-start;
 }
 .option-card:hover {
   border-color: #0070ff;
@@ -173,32 +175,40 @@ p > strong {
   font-weight: 600;
   color: #333d4b;
 }
+
+/* --- (수정 v7.2) 미리보기 박스 및 사각형 크기 통일 --- */
 .grid-preview {
   width: 48px;
-  height: 48px;
+  height: 80px; /* (핵심) 4줄짜리 높이(20px * 4)에 맞춰 고정 */
   display: grid;
-  gap: 3px;
+  gap: 2px;
+  align-content: center; /* (핵심) 내용물(그리드)을 수직 중앙 정렬 */
+  margin: 0 auto;
 }
+
 .grid-preview .grid-cell {
   background-color: #dde0e3;
   width: 100%;
+  aspect-ratio: 4 / 5; /* (핵심) 모든 셀을 4:5 비율로 고정 */
   border-radius: 1px;
 }
+
+/* 각 옵션별 그리드 구조 (행 높이 강제 지정 삭제) */
 .grid-preview[data-grid-vis="3x1-pano"] {
   grid-template-columns: 1fr 1fr 1fr;
+  /* grid-template-rows 삭제 -> 비율에 따라 자동 높이 */
 }
 .grid-preview[data-grid-vis="3x2-pano"] {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  /* 2줄이면 자동으로 2줄 생성 */
 }
 .grid-preview[data-grid-vis="3x3-pano"] {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
 }
 .grid-preview[data-grid-vis="3x4-pano"] {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
 }
+
 .option-card.active .grid-preview .grid-cell {
   background-color: #0070ff;
 }
@@ -229,7 +239,7 @@ p > strong {
   max-width: 100%;
 }
 
-/* --- (v6.0) 새로운 가이드 스타일 --- */
+/* --- 가이드 스타일 --- */
 .cropper-crop-box .seam-guides-dynamic {
   position: absolute;
   top: 0;
@@ -267,10 +277,10 @@ p > strong {
 }
 .seam-split-line.split-1 {
   left: 33.69%;
-} /* (33.5+1013)/3106 */
+}
 .seam-split-line.split-2 {
   left: 66.31%;
-} /* (33.5+1013+1013)/3106 */
+}
 
 /* 가로 분할선 (흰색 점선) */
 .seam-horizontal-line {
@@ -304,21 +314,22 @@ p > strong {
   width: 100%;
   height: auto;
 }
+/* 업로드 순서 번호 */
 .grid-number-label {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  background-color: rgba(0, 0, 0, 0.6);
+  top: 6px;
+  left: 6px;
+  background-color: #0070ff; /* 토스 파란색 강조 */
   color: white;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  border-radius: 8px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* --- 하단 버튼 --- */

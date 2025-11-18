@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>인스타 4:5 파노라마 정복</title>
+    <title>인스타 파노라마 메이커</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
@@ -19,14 +19,14 @@
       <div class="content-area">
         <div id="step-1-upload" class="toss-card active">
           <div class="card-content">
-            <h1>4:5 파노라마 피드<br />완벽하게 만들기</h1>
+            <h1>인스타 파노라마,<br />비율 걱정 없이 만드세요</h1>
             <p>
-              인스타 썸네일 잘림 현상까지 고려한<br />
-              정확한 오버랩 분할을 제공합니다.
+              가장 예쁜 4:5 비율로<br />
+              끊김 없이 이어지게 맞춰드려요.
             </p>
           </div>
           <div class="card-footer-simple">
-            <button id="uploadButton" class="btn-primary">+ 사진 올리기</button>
+            <button id="uploadButton" class="btn-primary">사진 고르기</button>
           </div>
           <input
             type="file"
@@ -39,23 +39,22 @@
         <div id="step-2-smart-switch" class="toss-card">
           <div class="card-content">
             <h1>
-              사진이 많이 잘려요.<br /><strong id="padHeadingText"
-                >여백을 채워</strong
-              >
-              나눌까요?
+              사진이 꽤 많이 잘려요<br />
+              <strong id="padHeadingText">여백을 넣어서</strong> 살릴까요?
             </h1>
             <p>
-              선택한 <strong id="padOptionText">"2줄"</strong> 비율에 맞게<br />
-              빈 공간은 검은색 여백으로 채워져요.
+              검은색 여백을 채우면<br />
+              원본 느낌 그대로 <strong id="padOptionText">"2줄"</strong>을 만들
+              수 있어요.
             </p>
             <div id="fitPreviewContainer"></div>
           </div>
           <div class="card-footer button-group">
             <button id="forceCropButton" class="btn-secondary">
-              ✂️ 아니요, 자를래요
+              그냥 자를래요
             </button>
             <button id="splitWithPadButton" class="btn-primary">
-              💙 네, 여백으로 나눌게요
+              네, 여백 넣을게요
             </button>
           </div>
         </div>
@@ -63,13 +62,13 @@
         <div id="step-2-crop" class="toss-card">
           <div class="card-content">
             <h1>
-              <strong id="cropHeadingText">"2줄 파노라마"</strong><br />
-              영역을 선택하세요
+              어떤 부분을 보여줄까요?<br />
+              <strong id="cropHeadingText">"2줄 파노라마"</strong>
             </h1>
             <p>
-              흰색 실선은 이미지가 나뉘는 곳,<br />
-              <span style="color: #ff4b4b">붉은 영역</span>은 썸네일에서 잘리는
-              곳입니다.
+              <span style="color: #ff4b4b">붉은색</span>은 목록에서 안 보이는
+              부분이에요.<br />
+              중요한 건 피해서 잡아주세요.
             </p>
             <div id="cropperContainer">
               <img id="cropperImage" src="" alt="크롭할 이미지" />
@@ -77,10 +76,10 @@
           </div>
           <div class="card-footer button-group">
             <button id="changeGridButton" class="btn-secondary">
-              🔄 줄 수 변경
+              줄 수 변경
             </button>
             <button id="cropAndSplitButton" class="btn-primary">
-              💙 이대로 나누기
+              이대로 나누기
             </button>
           </div>
         </div>
@@ -88,31 +87,29 @@
         <div id="step-2-options" class="toss-card">
           <div class="card-content">
             <h1>몇 줄로 나눌까요?</h1>
-            <p>4:5 비율 파노라마 기준입니다.</p>
+            <p>줄이 많을수록 사진이 크게 보여요.</p>
             <img id="sourcePreview" src="" alt="선택한 사진" />
             <div class="option-group" id="optionGroup"></div>
           </div>
           <div class="card-footer">
-            <button id="backToCropButton" class="btn-primary">
-              ↩️ 돌아가기
-            </button>
+            <button id="backToCropButton" class="btn-primary">이전으로</button>
           </div>
         </div>
 
         <div id="step-3-result" class="toss-card">
           <div class="card-content">
-            <h1>완료!</h1>
+            <h1>완성했어요</h1>
             <p>
-              순서대로(1번부터) 업로드하면<br />
-              피드에서 끊김 없이 이어집니다.
+              <strong>1번 사진부터 순서대로</strong> 올리면<br />
+              피드에서 그림이 딱 맞게 이어져요.
             </p>
             <div id="gridResultContainer"></div>
           </div>
           <div class="card-footer button-group">
             <button id="zipDownloadButton" class="btn-secondary">
-              .zip으로 모두 받기
+              한번에 저장하기
             </button>
-            <button id="restartButton" class="btn-primary">새로 하기</button>
+            <button id="restartButton" class="btn-primary">처음으로</button>
           </div>
         </div>
       </div>
