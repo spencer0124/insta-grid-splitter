@@ -1,30 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- (v7.0) 3106px 너비 기준 4:5 파노라마 비율 정의 ---
+  // --- (v8.0) 리브랜딩: 텍스트를 '분할/바둑판' 중심으로 변경 ---
   const ALL_GRID_OPTIONS = [
     {
       id: "3x1-pano",
-      text: "1줄 (3장)",
+      text: "3분할 (가로 긴 사진)",
       cols: 3,
       rows: 1,
       targetRatio: 3106 / 1350,
     },
     {
       id: "3x2-pano",
-      text: "2줄 (6장)",
+      text: "6분할 (바둑판 정석)",
       cols: 3,
       rows: 2,
       targetRatio: 3106 / 2700,
     },
     {
       id: "3x3-pano",
-      text: "3줄 (9장)",
+      text: "9분할 (프로필 꽉 채우기)",
       cols: 3,
       rows: 3,
       targetRatio: 3106 / 4050,
     },
     {
       id: "3x4-pano",
-      text: "4줄 (12장)",
+      text: "12분할 (대형 프로젝트)",
       cols: 3,
       rows: 4,
       targetRatio: 3106 / 5400,
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
 
       async handleSplitWithPad() {
-        App.ui.setLoading(App.elements.splitWithPadButton, "나누는 중...");
+        App.ui.setLoading(App.elements.splitWithPadButton, "작업 중...");
         const canvasToSplit = App.logic.createPaddedCanvas();
         const imageToSplit = new Image();
         imageToSplit.src = canvasToSplit.toDataURL("image/png");
@@ -222,14 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
           App.logic.splitImage(imageToSplit, App.state.selectedGridOption);
           App.ui.setLoading(
             App.elements.splitWithPadButton,
-            "네, 여백 넣을게요",
+            "네, 여백 채울게요",
             false
           );
         };
       },
 
       async handleCropAndSplit() {
-        App.ui.setLoading(App.elements.cropAndSplitButton, "나누는 중...");
+        App.ui.setLoading(App.elements.cropAndSplitButton, "작업 중...");
         if (!App.state.cropperInstance) return;
 
         const canvasToSplit = App.state.cropperInstance.getCroppedCanvas();
@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
           App.logic.splitImage(imageToSplit, App.state.selectedGridOption);
           App.ui.setLoading(
             App.elements.cropAndSplitButton,
-            "이대로 나누기",
+            "이대로 쪼개기",
             false
           );
         };
@@ -533,7 +533,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const { padHeadingText, padOptionText, fitPreviewContainer } =
           App.elements;
         const { originalImage } = App.state;
+        // "6분할 (바둑판 정석)" -> "6분할" 추출
         const boldText = gridOption.text.split(" ")[0];
+
         padHeadingText.innerHTML = `"${boldText}"로 나누면`;
         padOptionText.innerHTML = `"${boldText}"`;
         fitPreviewContainer.style.aspectRatio = gridOption.targetRatio;
