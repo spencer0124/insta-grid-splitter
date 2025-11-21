@@ -23,11 +23,11 @@
     />
     <meta name="author" content="Seungyong Cho" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://seungyongcho.com/insta-grid" />
+    <link rel="canonical" href="https://tools.seungyongcho.com/ig-9cut/" />
 
     <!-- SNS 공유 미리보기 (Open Graph) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://seungyongcho.com/insta-grid" />
+    <meta property="og:url" content="https://tools.seungyongcho.com/ig-9cut/" />
     <meta
       property="og:title"
       content="인스타 바둑판 피드 메이커 | 3초 만에 쪼개기"
@@ -37,6 +37,24 @@
       content="사진 한 장으로 꽉 찬 프로필을 만들어보세요. 9분할, 6분할 자동 완성."
     />
     <meta property="og:locale" content="ko_KR" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "인스타 바둑판 피드 메이커 (IG 9-Cut)",
+        "url": "https://tools.seungyongcho.com/ig-9cut/",
+        "description": "인스타그램 피드를 9분할, 6분할로 예쁘게 잘라주는 무료 온라인 도구입니다.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "KRW"
+        }
+      }
+    </script>
 
     <!-- 라이브러리 및 스타일 -->
     <link
@@ -160,10 +178,10 @@
         <!-- STEP 2-A: 스마트 스위치 (여백 제안) -->
         <div id="step-2-smart-switch" class="toss-card">
           <div class="card-content">
-            <h1>
+            <h2>
               사진이 꽤 많이 잘려요<br />
               <strong id="padHeadingText">사진 잘림 없이</strong> 만들까요?
-            </h1>
+            </h2>
             <p>
               여백을 채우면 원본 느낌 그대로<br />
               <strong id="padOptionText">"6분할"</strong> 바둑판이 돼요.
@@ -183,10 +201,10 @@
         <!-- STEP 2-B: 크롭 화면 -->
         <div id="step-2-crop" class="toss-card">
           <div class="card-content">
-            <h1>
+            <h2>
               어떤 부분을 보여줄까요?<br />
               <strong id="cropHeadingText">"6분할 정석"</strong>
-            </h1>
+            </h2>
             <p>
               <span style="color: #ff4b4b">붉은색</span>은
               <strong>상세페이지(피드)</strong>에선 보이지만,<br />
@@ -209,7 +227,7 @@
         <!-- STEP 2-C: 분할 옵션 선택 -->
         <div id="step-2-options" class="toss-card">
           <div class="card-content">
-            <h1>몇 조각으로 나눌까요?</h1>
+            <h2>몇 조각으로 나눌까요?</h2>
             <p>조각이 많을수록 프로필을 꽉 채워요.</p>
             <img id="sourcePreview" src="" alt="선택한 사진" />
             <div class="option-group" id="optionGroup"></div>
@@ -222,7 +240,7 @@
         <!-- STEP 3: 결과 및 다운로드 화면 -->
         <div id="step-3-result" class="toss-card">
           <div class="card-content">
-            <h1>조각내기 완료!</h1>
+            <h2>조각내기 완료!</h2>
             <p>
               <strong>숫자가 적힌 순서대로</strong> 올리면<br />
               피드에서 그림이 딱 맞게 이어져요.
