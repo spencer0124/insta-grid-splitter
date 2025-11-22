@@ -40,5 +40,14 @@ http://localhost:8080
 
 ---
 
+## 🔗 Related Projects
+
+다른 인스타그램 도구도 확인해보세요:
+
+- **[인스타 사진 이어붙이기](https://github.com/spencer0124/insta-carousel)**: 여러 사진을 이어서 긴 게시물을 만드는 도구
+- **[Web Tools Common Assets](https://github.com/spencer0124/web-tools-common-assets)**: 공통 UI 컴포넌트
+
+---
+
 ## 🤝 Contributing
 버그 제보나 기능 제안은 Issue를 통해 남겨주세요!
